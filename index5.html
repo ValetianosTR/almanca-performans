@@ -1,42 +1,24 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8"> <!-- Türkçe karakter desteği sağlar -->
-    <title>Almanca Yarışması</title> <!-- Tarayıcı sekmesinde görünecek başlık -->
+    <meta charset="UTF-8">
+    <title>Almanca Yarışması</title>
     <style>
         /* ========================================= */
         /* 1. GENEL TASARIM VE ARKA PLAN             */
         /* ========================================= */
         body { 
-            font-family: 'Segoe UI', sans-serif; /* Modern ve okunaklı bir font seçildi */
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Mavi-gri geçişli arka plan */
-            background-attachment: fixed; /* Arka planın kaymasını engeller */
-            text-align: center; /* Tüm içerik ortalanır */
-            padding: 20px; /* Kenarlardan boşluk bırakır */
-            margin: 0; /* Tarayıcı varsayılan kenar boşluklarını sıfırlar */
-            display: flex; /* İçerikleri esnek hizalamak için flexbox kullanılır */
-            align-items: center; /* İçeriği dikeyde ortalar */
-            justify-content: center; /* İçeriği yatayda ortalar */
-            min-height: 100vh; /* Ekranın tam boyunu kaplar */
-            overflow-x: hidden; /* Sağda solda kaydırma çubuğu çıkmasını kesin engeller */
+            font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
+            background-attachment: fixed;
+            text-align: center; 
+            padding: 20px; margin: 0; 
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; overflow-x: hidden; 
         }
 
-        /* ========================================= */
-        /* 2. YÜZEN ARKA PLAN İKONLARI               */
-        /* ========================================= */
-        .arka-plan-ikonlari {
-            position: fixed; /* İkonları ekrana sabitler */
-            top: 0; left: 0; width: 100%; height: 100%; /* Tüm ekranı kaplamasını sağlar */
-            z-index: 0;  /* İkonları en arka katmana atar */
-            pointer-events: none; /* İkonlara tıklanmasını engeller */
-        }
-        .bg-icon {
-            position: absolute; /* Her ikonun bağımsız konumlandırılmasını sağlar */
-            opacity: 0.15; /* İkonları hafif silik yapar ki metinler rahat okunsun */
-            animation: float ease-in-out infinite;  /* Süzülme animasyonunu sonsuz döngüye sokar */
-        }
-
-        /* İkonların konumları, boyutları ve animasyon süreleri belirlenir */
+        .arka-plan-ikonlari { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .bg-icon { position: absolute; opacity: 0.15; animation: float ease-in-out infinite; }
         .icon-1 { top: 10%; left: 10%; font-size: 80px; animation-duration: 6s; animation-delay: 0s; }  
         .icon-2 { top: 75%; left: 12%; font-size: 65px; animation-duration: 7s; animation-delay: 1s; }  
         .icon-3 { top: 15%; left: 80%; font-size: 90px; animation-duration: 8s; animation-delay: 2s; }  
@@ -48,106 +30,85 @@
         .icon-9 { top: 60%; left: 92%; font-size: 70px; animation-duration: 6s; animation-delay: 4s; }    
         .icon-10 { top: 50%; left: 18%; font-size: 65px; animation-duration: 7s; animation-delay: 1s; }   
 
-        /* Süzülme Animasyonunun Anahtar Kareleri (Keyframes) */
         @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); } /* Başlangıç noktası */
-            50% { transform: translateY(-30px) rotate(15deg); } /* Yukarı çıkıp hafif döner */
-            100% { transform: translateY(0px) rotate(0deg); } /* Başlangıç noktasına döner */
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
         }
 
         /* ========================================= */
-        /* 3. CAM EFEKTLİ ANA KUTU                   */
+        /* 2. ANA KUTU VE ARAYÜZ ELEMANLARI          */
         /* ========================================= */
         #ana-kutu { 
-            background: rgba(255, 255, 255, 0.90); /* Hafif saydam beyaz arka plan */
-            max-width: 800px; /* Maksimum genişlik biraz artırıldı (Tablo sığsın diye) */
-            width: 90%; /* Mobilde ve tahtada esnek genişlik */
-            margin: auto; /* Kutuyu dikey/yatay ortalar */
-            padding: 40px; /* İçerik ile kutu sınırı arasına boşluk koyar */
-            border-radius: 30px;  /* Köşeleri ovalleştirir */
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2); /* Derinlik veren gölge ekler */
-            border: 1px solid rgba(255, 255, 255, 0.4); /* İnce beyaz çerçeve çizgisi */
-            backdrop-filter: blur(15px); /* Arka plandaki renkleri bulandırarak cam efekti verir */
-            position: relative; /* Z-index'in çalışması için position tanımlanır */
-            z-index: 10; /* Kutu, ikonların önünde durur */
+            background: rgba(255, 255, 255, 0.90); max-width: 800px; width: 90%;
+            margin: auto; padding: 40px; border-radius: 30px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2); border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px); position: relative; z-index: 10; 
         }
 
-        /* ========================================= */
-        /* 4. ARAYÜZ ELEMANLARI (Girdi, Buton, Tablo)*/
-        /* ========================================= */
-        .input-alan { 
-            padding: 15px; font-size: 18px; border-radius: 15px; /* Yumuşak köşeli girdi alanı */
-            border: 2px solid #ddd; width: 85%; margin-bottom: 25px; /* Kalın gri çerçeve */
-            outline: none; transition: all 0.3s ease; /* Odaklanma animasyonu için süre */
-        }
-        .input-alan:focus { border-color: #3498db; box-shadow: 0 0 10px rgba(52, 152, 219, 0.3); } /* Tıklanınca mavi parlama efekti */
-        
+        .input-alan { padding: 15px; font-size: 18px; border-radius: 15px; border: 2px solid #ddd; width: 85%; margin-bottom: 25px; outline: none; transition: 0.3s; }
+        .input-alan:focus { border-color: #3498db; box-shadow: 0 0 10px rgba(52, 152, 219, 0.3); }
         .ana-btn { color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; cursor: pointer; transition: 0.3s; margin-top: 15px; font-weight: bold; margin-right: 10px; }
-        .ana-btn:hover { transform: scale(1.05); } /* Butonun üzerine gelince büyüme efekti */
+        .ana-btn:hover { transform: scale(1.05); }
         
-        .set-btn { background-color: #3498db; color: white; border: none; padding: 12px 25px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
-        .secili-set { background-color: #2c3e50; transform: scale(1.1); font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); } /* Aktif set butonunun stili */
+        /* RENKLİ SET BUTONLARI (YENİ) */
+        .set-btn { color: white; border: none; padding: 12px 25px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .btn-kolay { background-color: #2ecc71; } /* Yeşil */
+        .btn-orta { background-color: #f39c12; }  /* Turuncu */
+        .btn-zor { background-color: #e74c3c; }   /* Kırmızı */
+        .secili-set { transform: scale(1.15); font-weight: bold; box-shadow: 0 6px 12px rgba(0,0,0,0.3); border: 3px solid #2c3e50; filter: brightness(1.1); }
         
         .sik-btn { display: block; width: 100%; margin: 10px 0; padding: 15px; text-align: left; font-size: 16px; cursor: pointer; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; transition: 0.2s; }
-        .sik-btn:hover { background: #dfe4ea; border-color: #bdc3c7; } /* Şıkların üzerine gelince renk değişimi */
+        .sik-btn:hover { background: #dfe4ea; border-color: #bdc3c7; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: white; } /* Tablo kenarlıklarını birleştirir */
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; } /* Hücre içi boşluklar ve kenarlıklar */
-        th { background-color: #34495e; color: white; } /* Tablo başlıklarının rengi */
+        /* ZAMANLAYICI TASARIMI (YENİ) */
+        #zamanlayici-kutu { font-size: 26px; font-weight: bold; color: #e74c3c; margin: 15px 0; padding: 10px; background: #ffeaa7; border-radius: 10px; border: 2px dashed #e17055; }
         
-        /* LİDERLİK TABLOSU İÇİN ÖZEL TASARIM */
-        #liderlik-alani { margin-top: 30px; padding-top: 20px; border-top: 2px dashed #ccc; display: none; } /* Başlangıçta gizli tutulur, kesik çizgili üst kenarlık */
-        .lider-satir { background-color: #fcf3cf; font-weight: bold; } /* Liderlik satırlarına hafif sarı bir renk verir */
-
-        .uyari-metni { color: #e74c3c; font-weight: bold; font-size: 18px; margin-bottom: 20px; } /* Kırmızı uyarı metni */
-        .imza { margin-top: 30px; font-size: 14px; color: #7f8c8d; border-top: 1px solid #ddd; padding-top: 15px; } /* En alttaki imza alanı */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: white; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background-color: #34495e; color: white; }
+        #liderlik-alani { margin-top: 30px; padding-top: 20px; border-top: 2px dashed #ccc; display: none; }
+        .lider-satir { background-color: #fcf3cf; font-weight: bold; }
+        .uyari-metni { color: #e74c3c; font-weight: bold; font-size: 18px; margin-bottom: 20px; }
+        .imza { margin-top: 30px; font-size: 14px; color: #7f8c8d; border-top: 1px solid #ddd; padding-top: 15px; }
     </style>
 </head>
 <body>
 
-<!-- YÜZEN ARKA PLAN İKONLARI -->
 <div class="arka-plan-ikonlari">
-    <div class="bg-icon icon-1">📚</div>
-    <div class="bg-icon icon-2">✏️</div>
-    <div class="bg-icon icon-3">🧑‍🏫</div>
-    <div class="bg-icon icon-4">🎓</div>
-    <div class="bg-icon icon-5">⚽</div>
-    <div class="bg-icon icon-6">🎸</div>
-    <div class="bg-icon icon-7">🥨</div>
-    <div class="bg-icon icon-8">🎮</div>
-    <div class="bg-icon icon-9">🚴</div>
-    <div class="bg-icon icon-10">🏀</div>
+    <div class="bg-icon icon-1">📚</div><div class="bg-icon icon-2">✏️</div><div class="bg-icon icon-3">🧑‍🏫</div><div class="bg-icon icon-4">🎓</div>
+    <div class="bg-icon icon-5">⚽</div><div class="bg-icon icon-6">🎸</div><div class="bg-icon icon-7">🥨</div><div class="bg-icon icon-8">🎮</div>
+    <div class="bg-icon icon-9">🚴</div><div class="bg-icon icon-10">🏀</div>
 </div>
 
 <div id="ana-kutu">
-    <!-- ============================================== -->
-    <!-- 1. GİRİŞ EKRANI                                -->
-    <!-- ============================================== -->
+    <!-- GİRİŞ EKRANI -->
     <div id="giris-ekrani">
         <h1 style="color: #2c3e50;">🇩🇪 Willkommen!</h1>
-        <p class="uyari-metni">⚠️ Dikkat: Her soru 20 puandır. Toplam 5 soru sorulacaktır.</p>
+        <p class="uyari-metni">⚠️ Dikkat: Her soru 20 puandır. Soruları cevaplamak için 7 saniyeniz var!</p>
         
         <input type="text" id="kullanici-adi" class="input-alan" placeholder="Yarışmacının Adı veya Nickname'i...">
         
         <h3 style="color: #34495e;">Oynamak İstediğin Seti Seç:</h3>
-        <!-- Set Butonları -->
-        <button class="set-btn secili-set" id="set-btn-0" onclick="setSec(0)">Set 1 (Leicht)</button>
-        <button class="set-btn" id="set-btn-1" onclick="setSec(1)">Set 2 (Mittel)</button>
-        <button class="set-btn" id="set-btn-2" onclick="setSec(2)">Set 3 (Schwer)</button>
+        <!-- Renkli Butonlar -->
+        <button class="set-btn btn-kolay secili-set" id="set-btn-0" onclick="setSec(0)">Set 1 (Leicht)</button>
+        <button class="set-btn btn-orta" id="set-btn-1" onclick="setSec(1)">Set 2 (Mittel)</button>
+        <button class="set-btn btn-zor" id="set-btn-2" onclick="setSec(2)">Set 3 (Schwer)</button>
         
         <br>
         <button class="ana-btn" style="background-color: #2ecc71;" onclick="sinavaBasla()">Sınava Başla!</button>
     </div>
 
-    <!-- ============================================== -->
-    <!-- 2. SORU EKRANI                                 -->
-    <!-- ============================================== -->
+    <!-- SORU EKRANI -->
     <div id="soru-ekrani" style="display:none;">
-        <h4 id="soru-sayaci" style="color: #7f8c8d; border-bottom: 1px solid #eee; padding-bottom: 10px;">Soru 1 / 5</h4>
-        <h2 id="soru-metni" style="color: #2c3e50; margin: 25px 0;">Soru metni buraya gelecek</h2>
+        <h4 id="soru-sayaci" style="color: #7f8c8d; margin-bottom: 5px;">Soru 1 / 5</h4>
+        
+        <!-- ZAMANLAYICI EKRANI (YENİ) -->
+        <div id="zamanlayici-kutu">⏳ Kalan Süre: <span id="sure-degeri">7</span></div>
+        
+        <h2 id="soru-metni" style="color: #2c3e50; margin: 15px 0 25px 0;">Soru metni buraya gelecek</h2>
         
         <div id="siklar-alani">
-            <!-- Tıklanabilir şık butonları -->
             <button class="sik-btn" onclick="cevapla(0)" id="s0"></button>
             <button class="sik-btn" onclick="cevapla(1)" id="s1"></button>
             <button class="sik-btn" onclick="cevapla(2)" id="s2"></button>
@@ -156,14 +117,11 @@
         </div>
     </div>
 
-    <!-- ============================================== -->
-    <!-- 3. SONUÇ VE LİDERLİK EKRANI                    -->
-    <!-- ============================================== -->
+    <!-- SONUÇ EKRANI -->
     <div id="sonuc-ekrani" style="display:none;">
         <h2 id="komik-mesaj" style="color: #e67e22;"></h2>
         <h3 id="puan-sonuc" style="font-size: 24px; color: #27ae60;"></h3>
         
-        <!-- Anlık Oyuncunun Sonuç Tablosu -->
         <table id="sonuc-tablosu">
             <thead>
                 <tr>
@@ -173,36 +131,23 @@
                     <th>Durum</th>
                 </tr>
             </thead>
-            <tbody id="tablo-govdesi">
-                <!-- Javascript ile doldurulacak -->
-            </tbody>
+            <tbody id="tablo-govdesi"></tbody>
         </table>
         
-        <!-- YENİ: GENEL LİDERLİK TABLOSU -->
         <div id="liderlik-alani">
             <h3 style="color: #8e44ad;">🏆 Günün Liderlik Tablosu</h3>
             <table id="liderlik-tablosu">
                 <thead>
-                    <tr>
-                        <th>Yarışmacı</th>
-                        <th>Oynadığı Set</th>
-                        <th>Doğru ✅</th>
-                        <th>Yanlış ❌</th>
-                        <th>Toplam Puan</th>
-                    </tr>
+                    <tr><th>Yarışmacı</th><th>Seviye</th><th>Doğru ✅</th><th>Yanlış ❌</th><th>Puan</th></tr>
                 </thead>
-                <tbody id="liderlik-govdesi">
-                    <!-- Javascript ile doldurulacak -->
-                </tbody>
+                <tbody id="liderlik-govdesi"></tbody>
             </table>
         </div>
         
         <br>
-        <!-- Sistemi sıfırlamadan diğer kişiye geçiş butonu eklendi -->
         <button class="ana-btn" style="background-color: #3498db;" onclick="yeniYarismaciGec()">Sıradaki Yarışmacı Gelsin!</button>
     </div>
 
-    <!-- GELİŞTİRİCİ İMZASI -->
     <footer class="imza">
         <strong>💻 Developed by Tuğrul Kerem Dönmez</strong> <br>
         <small>Çağrıbey Anadolu Lisesi - Almanca Performans Projesi</small>
@@ -210,9 +155,6 @@
 </div>
 
 <script>
-    // =========================================================================
-    // VERİ TABANI (Sorular Array İçinde Obje Olarak Tutulur)
-    // =========================================================================
     const soruSetleri = [
         [ // SET 1: KOLAY (Leicht)
             { q: "1. 'Schwimmen' ne demektir?", a: ["Koşmak", "Yüzmek", "Okumak", "Uyumak", "Yemek yemek"], c: 1 },
@@ -237,101 +179,90 @@
         ]
     ];
 
-    // =========================================================================
-    // UYGULAMA DURUM DEĞİŞKENLERİ (State Management)
-    // =========================================================================
-    let seciliSetIndex = 0; // Hangi setin seçili olduğunu saklar.
-    let mevcutSoruIndex = 0; // O an kaçıncı soruda olunduğunu tutar.
-    let kullaniciCevaplari = []; // Oynayan kişinin şıklarını dizide saklar.
-    let kullaniciAdi = ""; // Oynayan yarışmacının adını tutar.
-    let liderlikTablosuVerileri = []; // YENİ: Tüm yarışmacıların bitiş verilerini tutacak global dizi.
+    let seciliSetIndex = 0; 
+    let mevcutSoruIndex = 0; 
+    let kullaniciCevaplari = []; 
+    let kullaniciAdi = ""; 
+    let liderlikTablosuVerileri = []; 
+    
+    // ZAMANLAYICI DEĞİŞKENLERİ
+    let soruSuresi; 
+    let kalanSaniye = 7;
 
-    // =========================================================================
-    // SET SEÇİM FONKSİYONU
-    // =========================================================================
     function setSec(index) {
-        seciliSetIndex = index; // Gelen parametreyi aktif set olarak ata.
-        
-        // CSS Sınıf Temizliği: Tüm butonların aktiflik rengini kaldır (DRY Prensibi)
+        seciliSetIndex = index; 
         document.querySelectorAll('.set-btn').forEach(btn => btn.classList.remove('secili-set'));
-        
-        // Sadece tıklanan butona aktif rengini ekle
         document.getElementById('set-btn-' + index).classList.add('secili-set');
     }
 
-    // =========================================================================
-    // OYUNU BAŞLATMA FONKSİYONU
-    // =========================================================================
     function sinavaBasla() {
-        kullaniciAdi = document.getElementById('kullanici-adi').value.trim(); // Boşlukları temizleyerek ismi al
-        
-        // Form Doğrulama (Validation): İsim girilmediyse uyarı ver ve işlemi durdur
+        kullaniciAdi = document.getElementById('kullanici-adi').value.trim(); 
         if (kullaniciAdi === "") {
             alert("Lütfen yarışacak kişinin adını yazın!");
             return;
         }
-
-        // Arayüz Geçişi: Giriş ekranını kapatıp soru ekranını aç
         document.getElementById('giris-ekrani').style.display = 'none';
         document.getElementById('soru-ekrani').style.display = 'block';
-        
-        soruGoster(); // İlk soruyu ekrana getiren fonksiyonu çağır
+        soruGoster(); 
     }
 
-    // =========================================================================
-    // SORU GÖSTERME FONKSİYONU
-    // =========================================================================
     function soruGoster() {
-        const aktifSet = soruSetleri[seciliSetIndex]; // Sadece seçilen setin verilerini al
+        const aktifSet = soruSetleri[seciliSetIndex]; 
         
-        // Eğer tüm sorular bitmişse sonucu hesaplama fonksiyonuna geç
         if (mevcutSoruIndex >= aktifSet.length) {
             bitir(); 
             return;  
         }
 
-        // Başlıkları ve soru metnini HTML içine yazdır
         document.getElementById('soru-sayaci').innerText = "Soru " + (mevcutSoruIndex + 1) + " / 5";
         document.getElementById('soru-metni').innerText = aktifSet[mevcutSoruIndex].q;
         
-        const harfler = ["A) ", "B) ", "C) ", "D) ", "E) "]; // Şık harfleri için sabit dizi
-        
-        // 5 şıkkı butonların içine döngü ile yerleştir (DRY Prensibi)
+        const harfler = ["A) ", "B) ", "C) ", "D) ", "E) "]; 
         for (let i = 0; i < 5; i++) {
             document.getElementById('s' + i).innerText = harfler[i] + aktifSet[mevcutSoruIndex].a[i];
         }
+
+        // ZAMANLAYICIYI BAŞLATMA MANTIĞI
+        kalanSaniye = 7; // Her soruda süreyi 7'ye eşitle
+        document.getElementById("sure-degeri").innerText = kalanSaniye;
+        clearInterval(soruSuresi); // Eski sayacı durdur
+        
+        // Saniyede bir çalışan geri sayım mekanizması
+        soruSuresi = setInterval(() => {
+            kalanSaniye--;
+            document.getElementById("sure-degeri").innerText = kalanSaniye;
+            
+            // Süre sıfır olduğunda
+            if (kalanSaniye <= 0) {
+                clearInterval(soruSuresi); // Sayacı durdur
+                cevapla(-1); // -1 göndererek boş/yanlış kabul et
+            }
+        }, 1000);
     }
 
-    // =========================================================================
-    // CEVAPLAMA FONKSİYONU (Herhangi bir şıkka tıklandığında çalışır)
-    // =========================================================================
     function cevapla(index) {
-        kullaniciCevaplari.push(index); // Seçilen şıkkın indeksini diziye ekle
-        mevcutSoruIndex++; // Soruyu bir sonrakine kaydır
-        soruGoster(); // Yeni soruyu çizdirmek için fonksiyonu baştan çağır
+        clearInterval(soruSuresi); // Soru cevaplandığı an süreyi durdur
+        kalanCevaplari.push(index); 
+        mevcutSoruIndex++; 
+        soruGoster(); 
     }
 
-    // =========================================================================
-    // SINAV BİTİRİŞ VE LİDERLİK TABLOSU HESAPLAMA (Geliştirilmiş)
-    // =========================================================================
     function bitir() {
-        // Ekran geçişleri: Soru bitti, sonuç ekranını aç
+        clearInterval(soruSuresi); // Ne olur ne olmaz sayacı tamamen kapat
         document.getElementById('soru-ekrani').style.display = 'none';
         document.getElementById('sonuc-ekrani').style.display = 'block';
         
-        const aktifSet = soruSetleri[seciliSetIndex]; // Çözülen seti belirle
-        let puan = 0; // Puan sayacını sıfırla
-        let dogruSayisi = 0; // Liderlik tablosu için doğru sayacı
-        let yanlisSayisi = 0; // Liderlik tablosu için yanlış sayacı
-        let tabloBody = ""; // Bireysel sonuç html metnini tutacak değişken
-        const harfler = ["A", "B", "C", "D", "E"]; // Harf haritalaması
+        const aktifSet = soruSetleri[seciliSetIndex]; 
+        let puan = 0; 
+        let dogruSayisi = 0; 
+        let yanlisSayisi = 0; 
+        let tabloBody = ""; 
+        const harfler = ["A", "B", "C", "D", "E"]; 
 
-        // Kullanıcının verdiği cevapları kontrol eden döngü
         aktifSet.forEach((soru, i) => {
-            const userAns = kullaniciCevaplari[i]; // Yarışmacının cevabı
-            const isCorrect = userAns === soru.c;  // Cevap doğruysa "true" döner
+            const userAns = kullaniciCevaplari[i]; 
+            const isCorrect = userAns === soru.c;  
             
-            // Eğer doğruysa puanı ve doğru sayısını artır, değilse yanlışı artır
             if (isCorrect) {
                 puan += 20; 
                 dogruSayisi++;
@@ -339,46 +270,40 @@
                 yanlisSayisi++;
             }
             
-            // Bireysel analiz tablosu için HTML satırlarını oluştur
+            // Eğer süre bittiyse (userAns -1 ise) tabloda "Zaman Bitti" yaz
+            let kullaniciEkrani = userAns === -1 ? "⏱️ Zaman Bitti" : harfler[userAns];
+
             tabloBody += `<tr>
                 <td>${i+1}</td>
-                <td>${harfler[userAns]}</td>
+                <td>${kullaniciEkrani}</td>
                 <td>${harfler[soru.c]}</td>
                 <td>${isCorrect ? '✅ Doğru' : '❌ Yanlış'}</td>
             </tr>`;
         });
 
-        // Puana göre esprili bitiş mesajı oluşturma
         let ozelMesaj = "";
         if(puan === 100) ozelMesaj = "Almanya vizesi hazır, bavulu topla! Mükemmel!";
         else if(puan >= 60) ozelMesaj = "Artık Berlin'de bir döner alacak kadar Almanca biliyorsun. Tebrikler!";
         else if(puan >= 20) ozelMesaj = "Biraz daha çalışırsan sosis satıcısıyla anlaşabilirsin.";
         else ozelMesaj = "Goethe mezarında ters döndü... Acil Almanca çalışman lazım!";
 
-        // Bireysel sonuçları HTML'e aktarma
         document.getElementById('komik-mesaj').innerText = "Vay be " + kullaniciAdi + "! " + ozelMesaj;
         document.getElementById('puan-sonuc').innerText = "Puanın: " + puan + " / 100";
         document.getElementById('tablo-govdesi').innerHTML = tabloBody;
-
-        // ==============================================================
-        // LİDERLİK TABLOSU VERİ KAYIT VE ÇİZİM İŞLEMİ (YENİ SİSTEM)
-        // ==============================================================
         
-        // Oynayan kişinin verilerini global diziye obje olarak ekle
+        let zorlukIsmi = seciliSetIndex === 0 ? "Leicht" : (seciliSetIndex === 1 ? "Mittel" : "Schwer");
+
         liderlikTablosuVerileri.push({
             isim: kullaniciAdi,
-            oynananSet: "Set " + (seciliSetIndex + 1), // Set 0 ise Set 1 yazar
+            oynananSet: zorlukIsmi,
             dogru: dogruSayisi,
             yanlis: yanlisSayisi,
             toplamPuan: puan
         });
 
-        // Puanlara göre liderlik tablosunu yüksekten düşüğe doğru sırala
         liderlikTablosuVerileri.sort((a, b) => b.toplamPuan - a.toplamPuan);
 
-        let liderlikBody = ""; // Liderlik HTML metnini tutacak değişken
-        
-        // Sıralanmış verileri döngüye alıp HTML tablo satırlarına dönüştür
+        let liderlikBody = ""; 
         liderlikTablosuVerileri.forEach(veri => {
             liderlikBody += `<tr class="lider-satir">
                 <td>${veri.isim}</td>
@@ -389,30 +314,17 @@
             </tr>`;
         });
 
-        // Tabloyu görünüre çıkar ve içini hazırlanan verilerle doldur
         document.getElementById('liderlik-alani').style.display = 'block';
         document.getElementById('liderlik-govdesi').innerHTML = liderlikBody;
     }
 
-    // =========================================================================
-    // YENİ YARIŞMACIYA GEÇİŞ FONKSİYONU (YENİ)
-    // =========================================================================
-    // Eskiden kullanılan location.reload() hafızayı sildiği için bu yeni fonksiyon yazıldı.
-    // Bu sayede liderlik dizisi hafızada tutulurken sadece anlık sorular sıfırlanır.
     function yeniYarismaciGec() {
-        // Oyun mekaniklerini sıfırla
         mevcutSoruIndex = 0; 
         kullaniciCevaplari = []; 
         kullaniciAdi = "";
-        
-        // Input kutusunun içindeki yazıyı sil
         document.getElementById('kullanici-adi').value = ""; 
-        
-        // Ekranları değiştir (Sonucu kapat, başa dön)
         document.getElementById('sonuc-ekrani').style.display = 'none';
         document.getElementById('giris-ekrani').style.display = 'block';
-        
-        // Otomatik olarak ilk seti seçili hale getir (Arayüz temizliği)
         setSec(0);
     }
 </script>
