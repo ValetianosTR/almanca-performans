@@ -47,29 +47,49 @@
         }
 
         .input-alan { padding: 15px; font-size: 18px; border-radius: 15px; border: 2px solid #ddd; width: 85%; margin-bottom: 25px; outline: none; transition: 0.3s; }
-        .input-alan:focus { border-color: #3498db; box-shadow: 0 0 10px rgba(52, 152, 219, 0.3); }
-        .ana-btn { color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; cursor: pointer; transition: 0.3s; margin-top: 15px; font-weight: bold; margin-right: 10px; }
+        .input-alan:focus { border-color: #8e44ad; box-shadow: 0 0 10px rgba(142, 68, 173, 0.3); }
+        
+        .ana-btn { color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; cursor: pointer; transition: 0.3s; margin-top: 15px; font-weight: bold; margin-right: 10px; background-color: #7f8c8d; }
         .ana-btn:hover { transform: scale(1.05); }
         
-        /* RENKLİ SET BUTONLARI (YENİ) */
         .set-btn { color: white; border: none; padding: 12px 25px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
-        .btn-kolay { background-color: #2ecc71; } /* Yeşil */
-        .btn-orta { background-color: #f39c12; }  /* Turuncu */
-        .btn-zor { background-color: #e74c3c; }   /* Kırmızı */
+        .btn-kolay { background-color: #2ecc71; } 
+        .btn-orta { background-color: #f39c12; }  
+        .btn-zor { background-color: #e74c3c; }   
         .secili-set { transform: scale(1.15); font-weight: bold; box-shadow: 0 6px 12px rgba(0,0,0,0.3); border: 3px solid #2c3e50; filter: brightness(1.1); }
         
-        .sik-btn { display: block; width: 100%; margin: 10px 0; padding: 15px; text-align: left; font-size: 16px; cursor: pointer; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; transition: 0.2s; }
+        .sik-btn { display: block; width: 100%; margin: 10px 0; padding: 15px; text-align: left; font-size: 16px; cursor: pointer; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; transition: 0.2s; font-weight: 500; }
         .sik-btn:hover { background: #dfe4ea; border-color: #bdc3c7; }
         
-        /* ZAMANLAYICI TASARIMI (YENİ) */
-        #zamanlayici-kutu { font-size: 26px; font-weight: bold; color: #e74c3c; margin: 15px 0; padding: 10px; background: #ffeaa7; border-radius: 10px; border: 2px dashed #e17055; }
+        /* ========================================= */
+        /* SENARYO KUTUSU VE ZAMANLAYICI             */
+        /* ========================================= */
+        #senaryo-kutusu {
+            background: #e8f8f5; border-left: 6px solid #1abc9c;
+            padding: 15px; margin-bottom: 20px; border-radius: 0 8px 8px 0;
+            font-size: 18px; font-style: italic; color: #2c3e50;
+            text-align: left; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        @keyframes kalp-atisi {
+            0% { transform: scale(1); box-shadow: 0 0 10px rgba(231, 76, 60, 0.4); }
+            50% { transform: scale(1.03); box-shadow: 0 0 25px rgba(231, 76, 60, 0.9); background-color: #f5b7b1; }
+            100% { transform: scale(1); box-shadow: 0 0 10px rgba(231, 76, 60, 0.4); }
+        }
+        
+        #zamanlayici-kutu { 
+            font-size: 28px; font-weight: bold; color: #c0392b; 
+            margin: 15px auto; padding: 12px; width: 60%;
+            background: #fadbd8; border-radius: 10px; border: 3px solid #e74c3c; 
+            animation: kalp-atisi 1s infinite; 
+        }
         
         table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: white; }
         th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
         th { background-color: #34495e; color: white; }
         #liderlik-alani { margin-top: 30px; padding-top: 20px; border-top: 2px dashed #ccc; display: none; }
         .lider-satir { background-color: #fcf3cf; font-weight: bold; }
-        .uyari-metni { color: #e74c3c; font-weight: bold; font-size: 18px; margin-bottom: 20px; }
+        .uyari-metni { color: #c0392b; font-weight: bold; font-size: 18px; margin-bottom: 20px; }
         .imza { margin-top: 30px; font-size: 14px; color: #7f8c8d; border-top: 1px solid #ddd; padding-top: 15px; }
     </style>
 </head>
@@ -82,30 +102,30 @@
 </div>
 
 <div id="ana-kutu">
-    <!-- GİRİŞ EKRANI -->
     <div id="giris-ekrani">
         <h1 style="color: #2c3e50;">🇩🇪 Willkommen!</h1>
-        <p class="uyari-metni">⚠️ Dikkat: Her soru 20 puandır. Soruları cevaplamak için 7 saniyeniz var!</p>
+        <p class="uyari-metni">⚠️ Dikkat: Her soru 20 puandır. Karar vermek için 12 saniyeniz var!</p>
         
         <input type="text" id="kullanici-adi" class="input-alan" placeholder="Yarışmacının Adı veya Nickname'i...">
         
         <h3 style="color: #34495e;">Oynamak İstediğin Seti Seç:</h3>
-        <!-- Renkli Butonlar -->
         <button class="set-btn btn-kolay secili-set" id="set-btn-0" onclick="setSec(0)">Set 1 (Leicht)</button>
         <button class="set-btn btn-orta" id="set-btn-1" onclick="setSec(1)">Set 2 (Mittel)</button>
         <button class="set-btn btn-zor" id="set-btn-2" onclick="setSec(2)">Set 3 (Schwer)</button>
         
         <br>
-        <button class="ana-btn" style="background-color: #2ecc71;" onclick="sinavaBasla()">Sınava Başla!</button>
+        <button class="ana-btn" onclick="sinavaBasla()">Sınava Başla!</button>
     </div>
 
-    <!-- SORU EKRANI -->
     <div id="soru-ekrani" style="display:none;">
         <h4 id="soru-sayaci" style="color: #7f8c8d; margin-bottom: 5px;">Soru 1 / 5</h4>
         
-        <!-- ZAMANLAYICI EKRANI (YENİ) -->
-        <div id="zamanlayici-kutu">⏳ Kalan Süre: <span id="sure-degeri">7</span></div>
+        <div id="zamanlayici-kutu">⏳ Kalan Süre: <span id="sure-degeri">12</span></div>
         
+        <div id="senaryo-kutusu">
+            <strong>🎭 Durum: </strong> <span id="senaryo-metni">Senaryo buraya gelecek</span>
+        </div>
+
         <h2 id="soru-metni" style="color: #2c3e50; margin: 15px 0 25px 0;">Soru metni buraya gelecek</h2>
         
         <div id="siklar-alani">
@@ -117,8 +137,8 @@
         </div>
     </div>
 
-    <!-- SONUÇ EKRANI -->
     <div id="sonuc-ekrani" style="display:none;">
+        <!-- KOMİK MESAJLARIN ÇIKACAĞI YER -->
         <h2 id="komik-mesaj" style="color: #e67e22;"></h2>
         <h3 id="puan-sonuc" style="font-size: 24px; color: #27ae60;"></h3>
         
@@ -157,25 +177,25 @@
 <script>
     const soruSetleri = [
         [ // SET 1: KOLAY (Leicht)
-            { q: "1. 'Schwimmen' ne demektir?", a: ["Koşmak", "Yüzmek", "Okumak", "Uyumak", "Yemek yemek"], c: 1 },
-            { q: "2. 'Rad fahren' ne anlama gelir?", a: ["Bisiklet sürmek", "Yüzmek", "Dans etmek", "Şarkı söylemek", "Oyun oynamak"], c: 0 },
-            { q: "3. 'lesen' fiilinin anlamı nedir?", a: ["Yazmak", "Dinlemek", "Okumak", "Koşmak", "Uyumak"], c: 2 },
-            { q: "4. 'Fußball spielen' ne demektir?", a: ["Basketbol oynamak", "Futbol oynamak", "Yüzmek", "Kitap okumak", "Müzik dinlemek"], c: 1 },
-            { q: "5. 'fernsehen' kelimesinin anlamı nedir?", a: ["Televizyon izlemek", "Telefonla konuşmak", "Oyun oynamak", "Koşmak", "Dans etmek"], c: 0 }
+            { s: "Yaz tatilindesin, hava 40 derece olmuş yanıyorsunuz. Serinlemek için arkadaşlarınla bir plan yapıyorsunuz.", q: "Was möchtest du wegen der Hitze machen?", a: ["Laufen", "Schwimmen", "Lesen", "Schlafen", "Essen"], c: 1 },
+            { s: "Sabah alarmı duymamışsın, servisi kaçırdın! Okula geç kalmamak için mecburen garajdaki iki tekerlekli aracı çıkarıyorsun.", q: "Wie fährst du zur Schule?", a: ["Rad fahren", "Schwimmen", "Tanzen", "Singen", "Spielen"], c: 0 },
+            { s: "Edebiyat hocası bu dönem için kalın bir roman verdi ve yarına bitmesi lazım. Odanı topladın, masana geçtin.", q: "Was machst du damit?", a: ["Schreiben", "Hören", "Lesen", "Laufen", "Schlafen"], c: 2 },
+            { s: "Beden dersindeyiz, hoca topu verdi 'kendi aranızda maç yapın' dedi. Sınıfı ikiye böldük, sahaya geçiyoruz.", q: "Welchen Sport spielt ihr?", a: ["Basketball spielen", "Fußball spielen", "Schwimmen", "Bücher lesen", "Musik hören"], c: 1 },
+            { s: "Cuma akşamı, mısırları patlattınız. Ailece salondaki o kocaman siyah ekrana bakarak vakit geçireceksiniz.", q: "Was macht ihr alle zusammen?", a: ["Fernsehen", "Telefonieren", "Spielen", "Laufen", "Tanzen"], c: 0 }
         ],
         [ // SET 2: ORTA (Mittel)
-            { q: "1. Ich ______ gern Gitarre.", a: ["spiele", "spielst", "spielen", "spielt", "gespielt"], c: 0 },
-            { q: "2. Du ______ gern Fußball.", a: ["spielst", "spiele", "spielen", "spielt", "gespielt"], c: 0 },
-            { q: "3. Was ist dein Hobby?", a: ["Ich bin 15 Jahre alt.", "Ich spiele gern Basketball.", "Ich gehe in die Schule.", "Ich habe einen Bruder.", "Ich komme aus der Türkei."], c: 1 },
-            { q: "4. Ich ______ gern Musik.", a: ["hörst", "höre", "hören", "hört", "gehört"], c: 1 },
-            { q: "5. Du ______ gern Bücher.", a: ["liest", "lese", "lesen", "liestet", "gelesen"], c: 0 }
+            { s: "Okulun müzik grubuna girmek istiyorsun. Seçmelerde hoca sordu, sen de elindeki telli enstrümanı gösterdin.", q: "Wie drückst du dein Hobby auf Deutsch aus?", a: ["Ich spiele gern Gitarre.", "Ich spielst gern Gitarre.", "Ich spielen gern Gitarre.", "Ich spielt gern Gitarre.", "Ich gespielt gern Gitarre."], c: 0 },
+            { s: "Mahalle maçındasınız, kankan Messi gibi herkesi çalımlayıp efsane bir gol attı. Ona dönüp gaz vermek istiyorsun.", q: "Was sagst du zu ihm/ihr?", a: ["Du spielst gern Fußball.", "Du spiele gern Fußball.", "Du spielen gern Fußball.", "Du spielt gern Fußball.", "Du gespielt gern Fußball."], c: 0 },
+            { s: "Okula Alman bir değişim öğrencisi geldi. Yanına oturup tanışmak istedi ve direkt 'Was ist dein Hobby?' dedi.", q: "Wie antwortest du?", a: ["Ich bin 15 Jahre alt.", "Ich spiele gern Basketball.", "Ich gehe in die Schule.", "Ich habe einen Bruder.", "Ich komme aus der Türkei."], c: 1 },
+            { s: "Yol uzun, otobüste cam kenarındasın. Kulaklıkları taktın, Spotify'dan en sevdiğin playlisti açtın.", q: "Was machst du gerade?", a: ["Ich hörst gern Musik.", "Ich höre gern Musik.", "Ich hören gern Musik.", "Ich hört gern Musik.", "Ich gehört gern Musik."], c: 1 },
+            { s: "Kütüphanede ders çalışıyoruz ama yanındaki arkadaşın sürekli bir şeyler okuyor, kafasını kitaptan kaldırmadı.", q: "Was flüsterst du ihm zu?", a: ["Du liest gern Bücher.", "Du lese gern Bücher.", "Du lesen gern Bücher.", "Du liestet gern Bücher.", "Du gelesen gern Bücher."], c: 0 }
         ],
         [ // SET 3: ZOR (Schwer)
-            { q: "1. Er spielt gern Fußball. Was braucht er?", a: ["Ein Buch", "Einen Ball", "Eine Kamera", "Einen Computer", "Eine Gitarre"], c: 1 },
-            { q: "2. Wo kann man Basketball spielen?", a: ["Im Kino", "Im Restaurant", "Auf dem Sportplatz", "Im Krankenhaus", "Im Supermarkt"], c: 2 },
-            { q: "3. Was passt NICHT in die Gruppe?", a: ["Schwimmen", "Laufen", "Lesen", "Tennis", "Fußball"], c: 2 },
-            { q: "4. Welcher Sport ist ein Mannschaftssport?", a: ["Schwimmen", "Tennis", "Fußball", "Joggen", "Skifahren"], c: 2 },
-            { q: "5. Welcher Sport ist ein Sommersport?", a: ["Skifahren", "Snowboarden", "Schlittschuhlaufen", "Schwimmen", "Eishockey"], c: 3 }
+            { s: "Yakın arkadaşın Hans'ın doğum günü. Çocuk resmen futbolla yatıp kalkıyor, kalede panter gibi.", q: "Was kaufst du ihm als Geschenk?", a: ["Ein Buch", "Einen Ball", "Eine Kamera", "Einen Computer", "Eine Gitarre"], c: 1 },
+            { s: "Sınıf turnuvası için antrenman yapacağız ama okulun bahçesi çok kalabalık. Oynayacak düzgün bir yer arıyoruz.", q: "Wohin müsst ihr gehen?", a: ["Im Kino", "Im Restaurant", "Auf dem Sportplatz", "Im Krankenhaus", "Im Supermarkt"], c: 2 },
+            { s: "Gruptan biri 'Bugün ter atalım, hareketli bir şeyler yapıp enerji atalım' diye gaza getirdi. Hangisi bu ortama hiç uymaz?", q: "Welches Wort passt NICHT zu diesem Plan?", a: ["Schwimmen", "Laufen", "Lesen", "Tennis", "Fußball"], c: 2 },
+            { s: "Beden hocası 10/A ile 10/B arasında büyük bir takım sporu turnuvası yapacak. Beraber oynanacak bir şey lazım.", q: "Was wählt ihr?", a: ["Schwimmen", "Tennis", "Fußball", "Joggen", "Skifahren"], c: 2 },
+            { s: "Temmuz ayındayız, hava 35 derece ve nemden nefes alınmıyor. Dışarıda koşmak imkansız, serinletecek bir spor lazım.", q: "Welcher Sport ist heute am besten?", a: ["Skifahren", "Snowboarden", "Schlittschuhlaufen", "Schwimmen", "Eishockey"], c: 3 }
         ]
     ];
 
@@ -185,9 +205,8 @@
     let kullaniciAdi = ""; 
     let liderlikTablosuVerileri = []; 
     
-    // ZAMANLAYICI DEĞİŞKENLERİ
     let soruSuresi; 
-    let kalanSaniye = 7;
+    let kalanSaniye = 12;
 
     function setSec(index) {
         seciliSetIndex = index; 
@@ -215,6 +234,8 @@
         }
 
         document.getElementById('soru-sayaci').innerText = "Soru " + (mevcutSoruIndex + 1) + " / 5";
+        
+        document.getElementById('senaryo-metni').innerText = aktifSet[mevcutSoruIndex].s;
         document.getElementById('soru-metni').innerText = aktifSet[mevcutSoruIndex].q;
         
         const harfler = ["A) ", "B) ", "C) ", "D) ", "E) "]; 
@@ -222,33 +243,30 @@
             document.getElementById('s' + i).innerText = harfler[i] + aktifSet[mevcutSoruIndex].a[i];
         }
 
-        // ZAMANLAYICIYI BAŞLATMA MANTIĞI
-        kalanSaniye = 7; // Her soruda süreyi 7'ye eşitle
+        kalanSaniye = 12; 
         document.getElementById("sure-degeri").innerText = kalanSaniye;
-        clearInterval(soruSuresi); // Eski sayacı durdur
+        clearInterval(soruSuresi); 
         
-        // Saniyede bir çalışan geri sayım mekanizması
         soruSuresi = setInterval(() => {
             kalanSaniye--;
             document.getElementById("sure-degeri").innerText = kalanSaniye;
             
-            // Süre sıfır olduğunda
             if (kalanSaniye <= 0) {
-                clearInterval(soruSuresi); // Sayacı durdur
-                cevapla(-1); // -1 göndererek boş/yanlış kabul et
+                clearInterval(soruSuresi); 
+                cevapla(-1); 
             }
         }, 1000);
     }
 
     function cevapla(index) {
-        clearInterval(soruSuresi); // Soru cevaplandığı an süreyi durdur
-        kalanCevaplari.push(index); 
+        clearInterval(soruSuresi); 
+        kullaniciCevaplari.push(index); 
         mevcutSoruIndex++; 
         soruGoster(); 
     }
 
     function bitir() {
-        clearInterval(soruSuresi); // Ne olur ne olmaz sayacı tamamen kapat
+        clearInterval(soruSuresi); 
         document.getElementById('soru-ekrani').style.display = 'none';
         document.getElementById('sonuc-ekrani').style.display = 'block';
         
@@ -270,7 +288,6 @@
                 yanlisSayisi++;
             }
             
-            // Eğer süre bittiyse (userAns -1 ise) tabloda "Zaman Bitti" yaz
             let kullaniciEkrani = userAns === -1 ? "⏱️ Zaman Bitti" : harfler[userAns];
 
             tabloBody += `<tr>
@@ -281,11 +298,22 @@
             </tr>`;
         });
 
+        // =========================================================================
+        // YENİ ÖĞRENCİ İŞİ KOMİK MESAJLAR (BURASI GÜNCELLENDİ)
+        // =========================================================================
         let ozelMesaj = "";
-        if(puan === 100) ozelMesaj = "Almanya vizesi hazır, bavulu topla! Mükemmel!";
-        else if(puan >= 60) ozelMesaj = "Artık Berlin'de bir döner alacak kadar Almanca biliyorsun. Tebrikler!";
-        else if(puan >= 20) ozelMesaj = "Biraz daha çalışırsan sosis satıcısıyla anlaşabilirsin.";
-        else ozelMesaj = "Goethe mezarında ters döndü... Acil Almanca çalışman lazım!";
+        if(puan === 100) {
+            ozelMesaj = "Oha kusursuz! Hoca sözlüne 100 girmezse ayıp. Yarın Berlin'e biletini kesiyoruz!";
+        }
+        else if(puan >= 60) {
+            ozelMesaj = "Fena değil kanka, geçer notu kaptın. En azından gurbetçi akrabalarla iki kelam edersin.";
+        }
+        else if(puan >= 20) {
+            ozelMesaj = "Kanka bu ne? Yazılıda çıksa kağıda adını yazıp çıkarsın resmen. Acil Duolingo indirip kasmaya başla!";
+        }
+        else {
+            ozelMesaj = "Geçmiş olsun kardeşim, Almanca seviyen 'Guten Morgen'dan öteye gidememiş. Derste arka sırada uyuduğun çok belli...";
+        }
 
         document.getElementById('komik-mesaj').innerText = "Vay be " + kullaniciAdi + "! " + ozelMesaj;
         document.getElementById('puan-sonuc').innerText = "Puanın: " + puan + " / 100";
