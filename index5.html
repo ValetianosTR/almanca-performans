@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Almanca Yarışması</title>
+    <style>
+        /* =========================================
+           1. GENEL TASARIM VE ARKA PLAN 
+           ========================================= */
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            /* Mavi-gri şık bir geçiş */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
+            background-attachment: fixed;
+            text-align: center; 
+            padding: 20px; 
+            margin: 0; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden; /* Yanlarda ve altta kaydırma çubuğu çıkmasını kesin engeller */
+        }
+
+        /* =========================================
+           2. YÜZEN ARKA PLAN İKONLARI (Zenginleştirildi)
+           ========================================= */
+        .arka-plan-ikonlari {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; 
+            pointer-events: none; /* Fareyle tıklamayı engeller */
+        }
+
+        .bg-icon {
+            position: absolute;
+            opacity: 0.15; /* Hafif silik görünmesi için */
+            /* Her ikona özel farklı hızlarda animasyon tanımlıyoruz */
+            animation: float ease-in-out infinite; 
+        }
+
+        /* Eski ve Yeni İkonların Konumları, Boyutları ve Hızları */
+        .icon-1 { top: 10%; left: 10%; font-size: 80px; animation-duration: 6s; animation-delay: 0s; }  /* Kitap */
+        .icon-2 { top: 75%; left: 12%; font-size: 65px; animation-duration: 7s; animation-delay: 1s; }  /* Kalem */
+        .icon-3 { top: 15%; left: 80%; font-size: 90px; animation-duration: 8s; animation-delay: 2s; }  /* Öğretmen */
+        .icon-4 { top: 70%; left: 85%; font-size: 75px; animation-duration: 5s; animation-delay: 0.5s; } /* Şapka */
+        
+        /* YENİ EKLENEN HOBİ VE KÜLTÜR İKONLARI */
+        .icon-5 { top: 40%; left: 5%; font-size: 70px; animation-duration: 6.5s; animation-delay: 1.5s; } /* Futbol */
+        .icon-6 { top: 85%; left: 45%; font-size: 85px; animation-duration: 7.5s; animation-delay: 3s; }  /* Gitar */
+        .icon-7 { top: 25%; left: 90%; font-size: 60px; animation-duration: 5.5s; animation-delay: 2.5s; } /* Pretzel */
+        .icon-8 { top: 5%; left: 45%; font-size: 80px; animation-duration: 8.5s; animation-delay: 0s; }   /* Oyun Kolu */
+        .icon-9 { top: 60%; left: 92%; font-size: 70px; animation-duration: 6s; animation-delay: 4s; }    /* Bisiklet */
+        .icon-10 { top: 50%; left: 18%; font-size: 65px; animation-duration: 7s; animation-delay: 1s; }   /* Basketbol */
+
+        /* Süzülme Animasyonunun Matematiği */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        /* =========================================
+           3. CAM EFEKTLİ ANA KUTU (Glassmorphism)
+           ========================================= */
+        #ana-kutu { 
+            background: rgba(255, 255, 255, 0.90); 
+            max-width: 700px; 
+            width: 90%;
+            margin: auto; 
+            padding: 40px; 
+            border-radius: 30px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2); 
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(15px); 
+            position: relative;
+            z-index: 10; /* İkonların önünde durmasını sağlar */
+        }
+
+        /* =========================================
+           4. ARAYÜZ ELEMANLARI (Girdi, Buton, Tablo)
+           ========================================= */
+        .input-alan { 
+            padding: 15px; font-size: 18px; border-radius: 15px; 
+            border: 2px solid #ddd; width: 85%; margin-bottom: 25px; 
+            outline: none; transition: all 0.3s ease;
+        }
+        .input-alan:focus { border-color: #3498db; box-shadow: 0 0 10px rgba(52, 152, 219, 0.3); }
+        .ana-btn { color: white; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; cursor: pointer; transition: 0.3s; margin-top: 15px; font-weight: bold; margin-right: 10px; }
+        .ana-btn:hover { transform: scale(1.05); }
+        .set-btn { background-color: #3498db; color: white; border: none; padding: 12px 25px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.2s; }
+        .secili-set { background-color: #2c3e50; transform: scale(1.1); font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .sik-btn { display: block; width: 100%; margin: 10px 0; padding: 15px; text-align: left; font-size: 16px; cursor: pointer; background: #f8f9fa; border: 1px solid #ddd; border-radius: 8px; transition: 0.2s; }
+        .sik-btn:hover { background: #dfe4ea; border-color: #bdc3c7; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background-color: #34495e; color: white; }
+        .uyari-metni { color: #e74c3c; font-weight: bold; font-size: 18px; margin-bottom: 20px; }
+        .imza { margin-top: 30px; font-size: 14px; color: #7f8c8d; border-top: 1px solid #ddd; padding-top: 15px; }
+    </style>
+</head>
+<body>
+
+<!-- YÜZEN ARKA PLAN İKONLARI (ZENGİNLEŞTİRİLDİ) -->
+<div class="arka-plan-ikonlari">
+    <div class="bg-icon icon-1">📚</div>
+    <div class="bg-icon icon-2">✏️</div>
+    <div class="bg-icon icon-3">🧑‍🏫</div>
+    <div class="bg-icon icon-4">🎓</div>
+    <div class="bg-icon icon-5">⚽</div>
+    <div class="bg-icon icon-6">🎸</div>
+    <div class="bg-icon icon-7">🥨</div>
+    <div class="bg-icon icon-8">🎮</div>
+    <div class="bg-icon icon-9">🚴</div>
+    <div class="bg-icon icon-10">🏀</div>
+</div>
+
+<div id="ana-kutu">
+    <!-- 1. GİRİŞ EKRANI -->
+    <div id="giris-ekrani">
+        <h1 style="color: #2c3e50;">🇩🇪 Willkommen!</h1>
+        <p class="uyari-metni">⚠️ Dikkat: Her soru 20 puandır. Toplam 5 soru sorulacaktır.</p>
+        
+        <input type="text" id="kullanici-adi" class="input-alan" placeholder="Ad veya Nickname yaz...">
+        
+        <h3 style="color: #34495e;">Oynamak İstediğin Seti Seç:</h3>
+        <button class="set-btn secili-set" id="set-btn-0" onclick="setSec(0)">Set 1 (Leicht)</button>
+        <button class="set-btn" id="set-btn-1" onclick="setSec(1)">Set 2 (Mittel)</button>
+        <button class="set-btn" id="set-btn-2" onclick="setSec(2)">Set 3 (Schwer)</button>
+        
+        <br>
+        <button class="ana-btn" style="background-color: #2ecc71;" onclick="sinavaBasla()">Sınava Başla!</button>
+    </div>
+
+    <!-- 2. SORU EKRANI -->
+    <div id="soru-ekrani" style="display:none;">
+        <h4 id="soru-sayaci" style="color: #7f8c8d; border-bottom: 1px solid #eee; padding-bottom: 10px;">Soru 1 / 5</h4>
+        <h2 id="soru-metni" style="color: #2c3e50; margin: 25px 0;">Soru metni buraya gelecek</h2>
+        
+        <div id="siklar-alani">
+            <button class="sik-btn" onclick="cevapla(0)" id="s0"></button>
+            <button class="sik-btn" onclick="cevapla(1)" id="s1"></button>
+            <button class="sik-btn" onclick="cevapla(2)" id="s2"></button>
+            <button class="sik-btn" onclick="cevapla(3)" id="s3"></button>
+            <button class="sik-btn" onclick="cevapla(4)" id="s4"></button>
+        </div>
+    </div>
+
+    <!-- 3. SONUÇ EKRANI -->
+    <div id="sonuc-ekrani" style="display:none;">
+        <h2 id="komik-mesaj" style="color: #e67e22;"></h2>
+        <h3 id="puan-sonuc" style="font-size: 24px; color: #27ae60;"></h3>
+        
+        <table id="sonuc-tablosu">
+            <thead>
+                <tr>
+                    <th>Soru No</th>
+                    <th>Senin Cevabın</th>
+                    <th>Doğru Cevap</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody id="tablo-govdesi">
+                <!-- Javascript ile doldurulacak -->
+            </tbody>
+        </table>
+        
+        <br>
+        <button id="tekrar-dene-btn" class="ana-btn" style="background-color: #f39c12;" onclick="tekrarDene()">Farklı Bir Setle Tekrar Dene!</button>
+        <button class="ana-btn" style="background-color: #3498db;" onclick="location.reload()">Yeni Yarışmacı (Başa Dön)</button>
+    </div>
+
+    <!-- GELİŞTİRİCİ İMZASI -->
+    <footer class="imza">
+        <strong>💻 Developed by Tuğrul Kerem Dönmez</strong> <br>
+        <small>Çağrıbey Anadolu Lisesi - Almanca Performans Projesi</small>
+    </footer>
+</div>
+
+<script>
+    // VERİ TABANI: Sorular (Değiştirilmedi)
+    const soruSetleri = [
+        [ // SET 1: KOLAY (Leicht)
+            { q: "1. 'Schwimmen' ne demektir?", a: ["Koşmak", "Yüzmek", "Okumak", "Uyumak", "Yemek yemek"], c: 1 },
+            { q: "2. 'Rad fahren' ne anlama gelir?", a: ["Bisiklet sürmek", "Yüzmek", "Dans etmek", "Şarkı söylemek", "Oyun oynamak"], c: 0 },
+            { q: "3. 'lesen' fiilinin anlamı nedir?", a: ["Yazmak", "Dinlemek", "Okumak", "Koşmak", "Uyumak"], c: 2 },
+            { q: "4. 'Fußball spielen' ne demektir?", a: ["Basketbol oynamak", "Futbol oynamak", "Yüzmek", "Kitap okumak", "Müzik dinlemek"], c: 1 },
+            { q: "5. 'fernsehen' kelimesinin anlamı nedir?", a: ["Televizyon izlemek", "Telefonla konuşmak", "Oyun oynamak", "Koşmak", "Dans etmek"], c: 0 }
+        ],
+        [ // SET 2: ORTA (Mittel)
+            { q: "1. Ich ______ gern Gitarre.", a: ["spiele", "spielst", "spielen", "spielt", "gespielt"], c: 0 },
+            { q: "2. Du ______ gern Fußball.", a: ["spielst", "spiele", "spielen", "spielt", "gespielt"], c: 0 },
+            { q: "3. Was ist dein Hobby?", a: ["Ich bin 15 Jahre alt.", "Ich spiele gern Basketball.", "Ich gehe in die Schule.", "Ich habe einen Bruder.", "Ich komme aus der Türkei."], c: 1 },
+            { q: "4. Ich ______ gern Musik.", a: ["hörst", "höre", "hören", "hört", "gehört"], c: 1 },
+            { q: "5. Du ______ gern Bücher.", a: ["liest", "lese", "lesen", "liestet", "gelesen"], c: 0 }
+        ],
+        [ // SET 3: ZOR (Schwer)
+            { q: "1. Er spielt gern Fußball. Was braucht er?", a: ["Ein Buch", "Einen Ball", "Eine Kamera", "Einen Computer", "Eine Gitarre"], c: 1 },
+            { q: "2. Wo kann man Basketball spielen?", a: ["Im Kino", "Im Restaurant", "Auf dem Sportplatz", "Im Krankenhaus", "Im Supermarkt"], c: 2 },
+            { q: "3. Was passt NICHT in die Gruppe?", a: ["Schwimmen", "Laufen", "Lesen", "Tennis", "Fußball"], c: 2 },
+            { q: "4. Welcher Sport ist ein Mannschaftssport?", a: ["Schwimmen", "Tennis", "Fußball", "Joggen", "Skifahren"], c: 2 },
+            { q: "5. Welcher Sport ist ein Sommersport?", a: ["Skifahren", "Snowboarden", "Schlittschuhlaufen", "Schwimmen", "Eishockey"], c: 3 }
+        ]
+    ];
+
+    // UYGULAMA DURUMU
+    let seciliSetIndex = 0; 
+    let mevcutSoruIndex = 0; 
+    let kullaniciCevaplari = []; 
+    let kullaniciAdi = ""; 
+    let oynananSetler = []; 
+
+    // SET SEÇİM FONKSİYONU
+    function setSec(index) {
+        if (oynananSetler.includes(index)) return;
+        seciliSetIndex = index;
+        document.querySelectorAll('.set-btn').forEach(btn => btn.classList.remove('secili-set'));
+        document.getElementById('set-btn-' + index).classList.add('secili-set');
+    }
+
+    // OYUNU BAŞLATMA FONKSİYONU
+    function sinavaBasla() {
+        kullaniciAdi = document.getElementById('kullanici-adi').value.trim();
+        if (kullaniciAdi === "") {
+            alert("Lütfen önce adını veya nickname'ini yaz!");
+            return;
+        }
+        oynananSetler.push(seciliSetIndex);
+        document.getElementById('giris-ekrani').style.display = 'none';
+        document.getElementById('soru-ekrani').style.display = 'block';
+        soruGoster();
+    }
+
+    // SORUYU EKRANA BASTIRMA FONKSİYONU
+    function soruGoster() {
+        const aktifSet = soruSetleri[seciliSetIndex]; 
+        if (mevcutSoruIndex >= aktifSet.length) {
+            bitir(); 
+            return;  
+        }
+        document.getElementById('soru-sayaci').innerText = "Soru " + (mevcutSoruIndex + 1) + " / 5";
+        document.getElementById('soru-metni').innerText = aktifSet[mevcutSoruIndex].q;
+        const harfler = ["A) ", "B) ", "C) ", "D) ", "E) "]; 
+        for (let i = 0; i < 5; i++) {
+            document.getElementById('s' + i).innerText = harfler[i] + aktifSet[mevcutSoruIndex].a[i];
+        }
+    }
+
+    // CEVAP KAYDETME FONKSİYONU
+    function cevapla(index) {
+        kullaniciCevaplari.push(index); 
+        mevcutSoruIndex++;
+        soruGoster();
+    }
+
+    // SINAV BİTİŞ FONKSİYONU
+    function bitir() {
+        document.getElementById('soru-ekrani').style.display = 'none';
+        document.getElementById('sonuc-ekrani').style.display = 'block';
+        const aktifSet = soruSetleri[seciliSetIndex];
+        let puan = 0;
+        let tabloBody = ""; 
+        const harfler = ["A", "B", "C", "D", "E"];
+
+        aktifSet.forEach((soru, i) => {
+            const userAns = kullaniciCevaplari[i]; 
+            const isCorrect = userAns === soru.c;  
+            if (isCorrect) puan += 20; 
+            
+            tabloBody += `<tr>
+                <td>${i+1}</td>
+                <td>${harfler[userAns]}</td>
+                <td>${harfler[soru.c]}</td>
+                <td>${isCorrect ? '✅ Doğru' : '❌ Yanlış'}</td>
+            </tr>`;
+        });
+
+        let ozelMesaj = "";
+        if(puan === 100) ozelMesaj = "Almanya vizesi hazır, bavulu topla! Mükemmel!";
+        else if(puan >= 60) ozelMesaj = "Artık Berlin'de bir döner alacak kadar Almanca biliyorsun. Tebrikler!";
+        else if(puan >= 20) ozelMesaj = "Biraz daha çalışırsan sosis satıcısıyla anlaşabilirsin.";
+        else ozelMesaj = "Goethe mezarında ters döndü... Acil Almanca çalışman lazım!";
+
+        document.getElementById('komik-mesaj').innerText = "Vay be " + kullaniciAdi + "! " + ozelMesaj;
+        document.getElementById('puan-sonuc').innerText = "Toplam Puanın: " + puan + " / 100";
+        document.getElementById('tablo-govdesi').innerHTML = tabloBody;
+
+        if (oynananSetler.length >= 3) {
+            document.getElementById('tekrar-dene-btn').style.display = 'none';
+        } else {
+            document.getElementById('tekrar-dene-btn').style.display = 'inline-block';
+        }
+    }
+
+    // TEKRAR DENEME FONKSİYONU
+    function tekrarDene() {
+        mevcutSoruIndex = 0;
+        kullaniciCevaplari = [];
+        document.getElementById('sonuc-ekrani').style.display = 'none';
+        document.getElementById('giris-ekrani').style.display = 'block';
+        
+        for (let i = 0; i < 3; i++) {
+            let btn = document.getElementById('set-btn-' + i);
+            if (oynananSetler.includes(i)) {
+                btn.style.backgroundColor = "#95a5a6"; 
+                btn.style.cursor = "not-allowed"; 
+                if (!btn.innerText.includes("(Çözüldü)")) {
+                    btn.innerText += " (Çözüldü)";
+                }
+            }
+        }
+        
+        for (let i = 0; i < 3; i++) {
+            if (!oynananSetler.includes(i)) {
+                setSec(i); 
+                break;     
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
